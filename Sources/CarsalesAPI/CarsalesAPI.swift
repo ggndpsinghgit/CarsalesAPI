@@ -1,6 +1,6 @@
 //  Created by Gagandeep Singh on 6/8/20.
 
-import Foundation
+import UIKit
 import Combine
 
 public class CarsalesAPI: API {

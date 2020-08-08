@@ -8,7 +8,6 @@ extension CarsalesAPI {
         public let title: String
         public let comments: String
         public let saleStatus: Status
-        
         private let overview: Overview
         
         public init(
@@ -28,8 +27,7 @@ extension CarsalesAPI {
         // MARK: Computed Properties
         
         public var priceString: String {
-            guard let price = self.overview.price else { return "Contact seller for price" }
-            return price.currencyString ?? price
+            overview.price ?? "Contact seller for price"
         }
         
         public var locationString: String {

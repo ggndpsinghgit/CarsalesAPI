@@ -43,8 +43,7 @@ extension CarsalesAPI {
         // MARK: Computed Properties
         
         public var priceString: String {
-            guard let price = self.price else { return "Contact seller for price" }
-            return price.currencyString ?? price
+            price ?? "Contact seller for price"
         }
         
         public var locationString: String {

@@ -10,7 +10,6 @@ protocol Endpoint {
 protocol API {
     var baseURL: URL { get }
     var dataLoader: DataLoader { get }
-    var cancellable: AnyCancellable? { get set }
 }
 
 extension API {
