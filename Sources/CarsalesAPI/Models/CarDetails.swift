@@ -8,7 +8,7 @@ extension CarsalesAPI {
         public let title: String
         public let comments: String
         public let saleStatus: Status
-        private let overview: Overview
+        internal let overview: Overview
         
         public init(
             id: String = UUID().uuidString,

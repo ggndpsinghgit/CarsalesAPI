@@ -124,6 +124,8 @@ final class CarsalesAPITests: XCTestCase {
         let data = json.data(using: .utf8)
         XCTAssertNotNil(data)
         XCTAssertNoThrow(try decoder.decode(CarsalesAPI.ListItem.self, from: data!))
+        let item = try! decoder.decode(CarsalesAPI.ListItem.self, from: data!)
+        XCTAssertEqual(item.locationString, "Australia")
     }
     
     func testListItemDeserialisationWithNilPrice() {
@@ -142,6 +144,8 @@ final class CarsalesAPITests: XCTestCase {
         let data = noPriceJSON.data(using: .utf8)
         XCTAssertNotNil(data)
         XCTAssertNoThrow(try decoder.decode(CarsalesAPI.ListItem.self, from: data!))
+        let item = try! decoder.decode(CarsalesAPI.ListItem.self, from: data!)
+        XCTAssertEqual(item.priceString, "Contact seller for price")
     }
     
     
@@ -164,6 +168,8 @@ final class CarsalesAPITests: XCTestCase {
         let data = json.data(using: .utf8)
         XCTAssertNotNil(data)
         XCTAssertNoThrow(try decoder.decode(CarsalesAPI.CarDetails.self, from: data!))
+        let item = try! decoder.decode(CarsalesAPI.CarDetails.self, from: data!)
+        XCTAssertEqual(item.photos, item.overview.photos)
     }
     
     func testDetailsDeserialisationWithNilLocation() {
@@ -185,6 +191,8 @@ final class CarsalesAPITests: XCTestCase {
         let data = json.data(using: .utf8)
         XCTAssertNotNil(data)
         XCTAssertNoThrow(try decoder.decode(CarsalesAPI.CarDetails.self, from: data!))
+        let item = try! decoder.decode(CarsalesAPI.CarDetails.self, from: data!)
+        XCTAssertEqual(item.locationString, "Australia")
     }
     
     func testDetailsDeserialisationWithNilPrice() {
@@ -206,6 +214,8 @@ final class CarsalesAPITests: XCTestCase {
         let data = json.data(using: .utf8)
         XCTAssertNotNil(data)
         XCTAssertNoThrow(try decoder.decode(CarsalesAPI.CarDetails.self, from: data!))
+        let item = try! decoder.decode(CarsalesAPI.CarDetails.self, from: data!)
+        XCTAssertEqual(item.priceString, "Contact seller for price")
     }
 
     static var allTests = [
