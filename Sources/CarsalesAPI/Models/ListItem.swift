@@ -8,6 +8,10 @@ extension CarsalesAPI {
     public struct ListResult: Decodable {
         public let objects: [ListItem]
         
+        public init(objects: [ListItem]) {
+            self.objects = objects
+        }
+        
         private enum CodingKeys: String, CodingKey {
             case objects = "Result"
         }

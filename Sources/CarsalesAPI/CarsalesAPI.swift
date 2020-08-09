@@ -3,18 +3,18 @@
 import UIKit
 import Combine
 
-public class CarsalesAPI: API {
+open class CarsalesAPI: API {
     let baseURL: URL = URL(string: "https://mocky.io")!
     var dataLoader: DataLoader = .init()
     var cancellable: AnyCancellable?
     
     public init() {}
     
-    public func getList(completion: @escaping (Result<ListResult, Error>) -> Void){
+    open func getList(completion: @escaping (Result<ListResult, Error>) -> Void){
         cancellable = request(endpoint: CarsalesEndpoint.list, completion: completion)
     }
 
-    public func getDetails(path: String, completion: @escaping (Result<CarDetails, Error>) -> Void){
+    open func getDetails(path: String, completion: @escaping (Result<CarDetails, Error>) -> Void){
         cancellable = request(endpoint: CarsalesEndpoint.details(path), completion: completion)
     }
 }
