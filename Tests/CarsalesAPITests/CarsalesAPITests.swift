@@ -1,7 +1,60 @@
 @testable import CarsalesAPI
 import XCTest
+import Combine
+
+final class MockAPI: API {
+    var baseURL: URL = URL(string: "https://testcarsalesapi.com")!
+    var dataLoader: DataLoader = .init()
+    
+    @discardableResult
+    func request<T: Decodable>(endpoint: Endpoint, completion: @escaping (Result<T, Error>) -> Void) -> AnyCancellable? {
+        switch endpoint {
+        case CarsalesEndpoint.list:
+            completion(.success(CarsalesAPI.ListResult(objects: [.sample]) as! T))
+        case CarsalesEndpoint.details:
+            completion(.success(CarsalesAPI.CarDetails.sample as! T))
+        default:
+            completion(.failure(NSError(domain: "", code: 500, userInfo: nil)))
+        }
+        return nil
+    }
+}
 
 final class CarsalesAPITests: XCTestCase {
+    func testAPIListResponse() {
+        let api = MockAPI()
+        
+        let expectation = XCTestExpectation(description: "listItem")
+        api.request(endpoint: CarsalesEndpoint.list) { (result: Result<CarsalesAPI.ListResult, Error>) in
+            switch result {
+            case .success(let value):
+                XCTAssertEqual(value.objects.first?.title, CarsalesAPI.ListItem.sample.title)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 1)
+    }
+    
+    func testAPIDetailsResponse() {
+        let api = MockAPI()
+        
+        let expectation = XCTestExpectation(description: "details")
+        api.request(endpoint: CarsalesEndpoint.details("")) { (result: Result<CarsalesAPI.CarDetails, Error>) in
+            switch result {
+            case .success(let value):
+                XCTAssertEqual(value.title, CarsalesAPI.CarDetails.sample.title)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 1)
+    }
+    
     func testListItemDeserialisation() {
         let json = """
         { \
@@ -156,6 +209,8 @@ final class CarsalesAPITests: XCTestCase {
     }
 
     static var allTests = [
+        ("testAPIListResponse", testAPIListResponse),
+        ("testAPIDetailsResponse", testAPIDetailsResponse),
         ("testListItemDeserialisation", testListItemDeserialisation),
         ("testMultipleListItemDeserialisation", testMultipleListItemDeserialisation),
         ("testListItemDeserialisationWithNilLocation", testListItemDeserialisationWithNilLocation),
